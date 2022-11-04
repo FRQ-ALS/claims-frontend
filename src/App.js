@@ -7,6 +7,8 @@ import Login from "./Login";
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
 import Appbar from './Appbar';
+import ApiTest from './ApiTest';
+import CarRegistry from './components/CarRegistry';
 
 
 import {
@@ -38,6 +40,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/Apitest" element={<ApiTest />} />
+            <Route path="/registercar" element={<CarRegistry />} />
+
 
           </Routes>
         </ThemeProvider>

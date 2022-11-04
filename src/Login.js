@@ -61,16 +61,23 @@ const handleSubmit = (e) => {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(login)
-  }).then(response => {
-    if(response.ok) {
-      
+  }).then((response) => response.json())
+  .then((responseJson) => {
+    if(responseJson.userID== undefined) {
+      setOpen(true)
+      setText("Incorrect email or password, try again")
+      return
+    }
+    localStorage.setItem('userID', responseJson.userID)
+    if(responseJson.carRegistered==true) {
       navigate("/dashboard")
     }
 
-    if(!response.ok) {
-      setOpen(true)
-      setText("Incorrect email or password, try again")
+    if(responseJson.carRegistered==false) {
+      navigate("/registerCar")
     }
+    
+    
   })
 };
 

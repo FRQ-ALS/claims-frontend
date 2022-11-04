@@ -16,6 +16,7 @@ import Alert from '@mui/material/Alert';
 import { Collapse } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import blue from "@material-ui/core/colors/blue";
+import YourVehicle from './components/YourVehicle';
 
 
 
@@ -85,7 +86,9 @@ const handleSubmit = (e) => {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box>
+
+        <YourVehicle></YourVehicle>
+        {/* <Box>
 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               onChange={handleVIN}
@@ -142,7 +145,7 @@ const handleSubmit = (e) => {
           </Box>
             
             
-        </Box>
+        </Box> */}
       </Container>
     </ThemeProvider>
   );

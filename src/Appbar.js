@@ -136,7 +136,7 @@ const ResponsiveAppBar = () => {
               textDecoration: "none",
             }}
           >
-            ElectroSwap
+            
           </Typography>
           {loggedIn ? (
             <Box sx={{ flexGrow: 3, display: { xs: 10, md: "flex" }}}>

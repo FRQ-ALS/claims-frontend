@@ -38,9 +38,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [retype, setRetype] = useState('');
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const [alertSeverity, setSeverity] = useState('')
 
 
   const handleEmail = (e) => {
@@ -54,26 +52,18 @@ export default function SignUp() {
   const handleRetype = (e) => {
     setRetype(e.target.value)
   }
-  const handleDay = (e) => {
-    setDay(e.target.value)
-  }
 
-  const handleMonth = (e) => {
-    setMonth(e.target.value)
-  }
-
-  const handleYear = (e) => {
-    setYear(e.target.value)
-  }
 
   function checkPasword(pass1, pass2) {
     if(pass1 != pass2){
+        setSeverity("error")
         setOpen(true)
         setText("Your passwords do not match")
         return false;
     }
 
     if(pass1.length < 8) {
+        setSeverity("error")
         setOpen(true)
         setText("Your password must be at least 8 characters long")
         return false;
@@ -85,6 +75,7 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     handleError(false)
+    setOpen(false)
     event.preventDefault();
 
     if(checkPasword(password, retype)) {
@@ -95,21 +86,24 @@ export default function SignUp() {
           method: 'POST',
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(signup)
-        }).then(response => {
-            console.log(response)
-            if (response.ok) {
-                setOpen(true)
-                setText("Your account has been created")
-                setTimeout(()=>
-                navigate("/login")
-                ,2000);
-            }
+        }).then((response) => response.json())
+           .then((responseJson) => {
+        if (responseJson.actionPerformed==true) {
+          setSeverity("success")
+          setOpen(true)
+          setText("Your account has been created! Transferring you to log-in...")
+          setTimeout(()=>
+          navigate("/login")
+          ,2000);
+      }
 
-            if(response.statusText =='Bad Request') {
-                setOpen(true)
-                setText("Email already taken, please use another email!")
-            }
-      });
+      if(responseJson.actionPerformed==false) {
+          setSeverity("error")
+          setOpen(true)
+          setText("Email already taken, please use another email!")
+      }
+
+      })
     }
  
 }
@@ -171,8 +165,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs ={12}>
                 <Collapse in={open}>
-              <Alert severity="error">
-
+              <Alert severity={alertSeverity}>
                  <strong>{errorText}</strong>
               </Alert>
               </Collapse>
