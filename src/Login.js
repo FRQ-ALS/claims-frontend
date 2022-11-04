@@ -125,7 +125,6 @@ const handleSubmit = (e) => {
             <Grid item xs ={12}>
                 <Collapse in={open}>
               <Alert severity="error">
-
                  <strong>{errorText}</strong>
               </Alert>
               </Collapse>
