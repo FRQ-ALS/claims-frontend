@@ -76,6 +76,8 @@ const handleSubmit = (e) => {
     if(responseJson.carRegistered==false) {
       navigate("/registerCar")
     }
+
+    console.log(responseJson.jwt)
     
     
   })

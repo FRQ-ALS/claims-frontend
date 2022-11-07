@@ -12,6 +12,9 @@ import carImage2 from './car-26-512.png'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Box } from '@material-ui/core';
+import { Alert } from '@mui/material';
+import {Collapse} from '@mui/material';
+import {Grid} from '@mui/material';
 
 
 const theme = createTheme();
@@ -21,6 +24,8 @@ export default function YourVehicle() {
   const [carData, setCarData] = useState([])
   const [buttonText, setButtonText] = useState("GET A QUOTE")
   const [quoteData, setQuoteData] = useState([])
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertText, setAlertText] = useState('')
 
 
   function changeButtonText(insurance) {
@@ -34,11 +39,16 @@ export default function YourVehicle() {
   }
 
 
-  function makeClaim() {
 
-  }
+  const handleGetQuote = (event, insurance) => {
 
-  function getQuote() {
+    
+    if(insurance==true) {
+      console.log("true")
+      setAlertOpen(true)
+      setAlertText("Your car is already insured")
+      return
+    }
 
     var vehicleID = carData.vehicleID
     var userID = carData.userID
@@ -52,7 +62,6 @@ export default function YourVehicle() {
       body: JSON.stringify(postBody)
     }).then((response) => response.json())
     .then(data => setQuoteData(data))
-
     console.log(quoteData)
   }
 
@@ -77,6 +86,13 @@ export default function YourVehicle() {
     <React.Fragment>
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Collapse in={alertOpen}>
+                                <Alert severity="success">
+                                    <strong>{alertText}</strong>
+                                </Alert>
+
+                            </Collapse>
+
       <Paper sx={{
         position:'relative',
         top:10,
@@ -116,6 +132,7 @@ export default function YourVehicle() {
             color:blue[700],
             backgroundColor:"white"
         }}>{carData.fuelType}</Typography>
+        
 
 
 <Typography sx={{
@@ -128,18 +145,11 @@ export default function YourVehicle() {
             fontWeight:'bold',
             backgroundColor: blue[400]
         }}
-        onClick={event=> {
-            if(carData.isInsured){
-                 makeClaim()
-            }
-            if(!carData.isInsured) {
-                getQuote()
-            }
-        }}
+        onClick={event=> handleGetQuote(event, carData.insured)}
         >{buttonText}</Button>
+
+
         </Box>
-
-
       </Paper>
       
     </ThemeProvider>
