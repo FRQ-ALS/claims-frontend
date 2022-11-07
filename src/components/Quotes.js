@@ -14,14 +14,63 @@ import { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { red } from '@mui/material/colors';
 import Grid from '@mui/material/Grid';
+import { Collapse } from '@mui/material';
+import {Accordion} from '@mui/material';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {Dialog} from '@mui/material';
+import {DialogActions} from '@mui/material';
+import {DialogContent} from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 const theme = createTheme();
 export default function Quotes() {
   let navigate = useNavigate();
+  
 
 
   const [quotes, setQuoteData] = useState([])
+  const [dateString, setDate] = useState('')
+  const [paymentType, setPaymentType] = useState('')
+  const [submitOpen, setSubmitOpen] = useState(false)
+  const [quoteID, setQuoteID] = useState('')
+
+
+  const handleMonthly = (event, quoteID) => {
+    setPaymentType("monthly")
+    setQuoteID(quoteID)
+    setSubmitOpen(true)
+
+  }
+
+  const handleAnnually = (event, quoteID) => {
+    setQuoteID(quoteID)
+    setPaymentType("annually")
+    setSubmitOpen(true)
+  }
+
+  const handleSubmit = (e) => {
+
+    var userID = localStorage.getItem("userID")
+
+    var quoteResponse = {quoteID, userID, paymentType}
+
+    fetch('/quotes/quoteResponse',  {
+        credentials: 'include',
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(quoteResponse)
+      }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.message)
+      })
+
+  }
+
+  const handleSubmitClose = (e) => {
+    setSubmitOpen(false)
+  }
 
 
   React.useEffect(() => {
@@ -36,8 +85,9 @@ export default function Quotes() {
         },
           }).then((response) => response.json())
           .then(data => setQuoteData(data));
-    
-    }, [])
+
+    }
+    , [])
 
 
   return (
@@ -62,7 +112,7 @@ export default function Quotes() {
                     <Typography
                     sx={{
                         fontWeight:'bold',
-                        fontSize:28,
+                        fontSize:24,
                         color:"white"
                     }}>£{quote.yearlyQuoteValue} one time payment </Typography>
                         </Grid>
@@ -89,26 +139,37 @@ export default function Quotes() {
                                 fontSize:28
                             }}>for {quote.regNumber}</Typography>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Button variant="contained" sx={{
-                                backgroundColor:'white',
-                                width: 80,
-                                height:30,
-                                marginTop:1,
-                                color: red[900],
-                                fontWeight:'bold'
-                            }}>REJECT</Button>
+
+                        <Grid item xs={12}>
+                            <Typography sx={{
+                                fontWeight:'bold',
+                                color:'white',
+                                fontSize:15,
+                            }}>Expires : {quote.quoteExpiry}</Typography>
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Button variant="contained" sx={{
+                            <Button variant="contained" onClick={event => handleMonthly(event, quote.quoteID)} sx={{
                                 backgroundColor:'white',
-                                width: 80,
-                                height:30,
-                                marginTop:1,
-                                color: "green",
-                                fontWeight:'bold'
-                            }}>ACCEPT</Button>
+                                width: 150,
+                                height:40,
+                                marginTop:3,
+                                color: red[900],
+                                fontWeight:'bold',
+                                borderRadius:4
+                            }}>PAY MONTHLY</Button>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <Button variant="contained" onClick={event => handleAnnually(event, quote.quoteID)}sx={{
+                                backgroundColor:'white',
+                                width: 150,
+                                height:40,
+                                marginTop:3,
+                                color: red[900],
+                                fontWeight:'bold',
+                                borderRadius:4
+                            }}>PAY ANNUALLY</Button>
                         </Grid>
 
                     </Grid>
@@ -116,7 +177,14 @@ export default function Quotes() {
             )
         })}
         </div>
-      
+
+        <Dialog open={submitOpen} onClose={handleSubmitClose}>
+                    <DialogTitle>Are you sure you want to pay {paymentType}?</DialogTitle>
+                        <DialogActions>
+                        <Button variant='contained' onClick={handleSubmitClose}>Cancel</Button>
+                        <Button variant='contained'onClick={handleSubmit}>Submit</Button>
+                        </DialogActions>
+                  </Dialog>
     </ThemeProvider>
     </React.Fragment>
   );

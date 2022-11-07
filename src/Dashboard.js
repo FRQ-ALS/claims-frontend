@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import blue from "@material-ui/core/colors/blue";
 import YourVehicle from './components/YourVehicle';
 import Quotes from './components/Quotes';
-
+import Insurance from './components/Insurance';
 
 
 
@@ -89,7 +89,8 @@ const handleSubmit = (e) => {
         <CssBaseline />
 
         <YourVehicle></YourVehicle>
-        <Quotes></Quotes>
+        <Quotes ></Quotes>
+        <Insurance></Insurance>
         {/* <Box>
 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
