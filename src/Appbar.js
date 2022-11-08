@@ -17,15 +17,18 @@ import { useNavigate } from "react-router-dom";
 import { ElevenMpTwoTone } from "@mui/icons-material";
 import blue from "@material-ui/core/colors/blue";
 import { Paper } from "@mui/material";
+import CarCrashIcon from '@mui/icons-material/CarCrash';
+import { useState } from "react";
+import { useEffect } from "react";
 
-const pages = ["inventory", "auction", "notifications", "donate", "analytics"];
-const settings = ["Profile", , "Logout"];
+const settings = ["Profile", "Dashboard", "Logout"];
 
-const ResponsiveAppBar = () => {
+const Appbar = () => {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("loggedIn"));
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,31 +38,42 @@ const ResponsiveAppBar = () => {
   };
 
   const handleCloseNavMenu = (event, page) => {
-    // console.log(event.currentTarget)
-    // navigate('/'+event.currentTarget)
   };
 
-  const handlePageSelection = (event, page) => {
-    navigate("/"+page)
+  const handleMenuSelection = (event, item) => {
 
-  }
+    if(item=="Logout") {
+      localStorage.setItem("jwt", "")
+      sessionStorage.setItem("loggedIn", false)
+      setLoggedIn(false)
+      navigate("/")
+    }
+
+    if(item=="Dashboard")
+    navigate("/dashboard")
+
+    }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
 
   };
 
-  React.useEffect(() => {
-    setLoggedIn(localStorage.getItem('loggedin'))  
-  })
 
- 
+  function updateLogInStatus(status) {
+    this.setLoggedIn(status)
+  }
+
+  
+
+  
+
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <BoltIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <CarCrashIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -75,50 +89,11 @@ const ResponsiveAppBar = () => {
               textDecoration: "none",
             }}
           >
-            INSURANCE CLAIMS
+            INSURANCE
           </Typography>
 
-          {loggedIn ? (
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu} justifyContent='center'>
-                    <Typography textAlign="center" >{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          ) : (
-            ""
-          )}
-          <BoltIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1}}
+         
+          <CarCrashIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1}}
            style={{fill: "yellow"}} />
           <Typography
             variant="h5"
@@ -132,31 +107,14 @@ const ResponsiveAppBar = () => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#FFFF00",
+              color: "white",
               textDecoration: "none",
             }}
           >
-            
+            INSRUANCE
           </Typography>
-          {loggedIn ? (
+          {/* {loggedIn ? (
             <Box sx={{ flexGrow: 3, display: { xs: 10, md: "flex" }}}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={event => handlePageSelection(event, page)}
-                  sx={{ my: 2, color: blue[900], display: "block" }}
-                  style={{
-                    borderSpacing:100,
-                    fontWeight:'bold',
-                    backgroundColor:blue[900],
-                    borderRadius:10,
-                    // fontSize:18,
-                    marginLeft:100,
-                  }}
-                >
-                  {page}
-                </Button>
-              ))}
             </Box>
             
           )
@@ -164,7 +122,7 @@ const ResponsiveAppBar = () => {
             <Box
               sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
             ></Box>
-          )}
+          )} */}
 
           {loggedIn ? (
             <Box sx={{ flexGrow: 0 }}>
@@ -194,7 +152,7 @@ const ResponsiveAppBar = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Button onClick={event=> handleMenuSelection(event, setting)} textAlign="center">{setting}</Button>
                   </MenuItem>
                 ))}
               </Menu>
@@ -208,7 +166,6 @@ const ResponsiveAppBar = () => {
                   sx={{ p: 0 }}
                 >
                   <LoginIcon />
-                  LOGIN / SIGNUP
                 </Button>
               </Tooltip>
             </Box>
@@ -218,4 +175,4 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+export default Appbar;

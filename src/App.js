@@ -9,6 +9,7 @@ import Dashboard from './Dashboard';
 import Appbar from './Appbar';
 import ApiTest from './ApiTest';
 import CarRegistry from './components/CarRegistry';
+import { red } from '@mui/material/colors';
 
 
 import {
@@ -36,7 +37,7 @@ function App() {
         <ThemeProvider theme={themeLight}>
           <CssBaseline />
           <Routes>
-            
+            {/* <Route path='/home' element={<Home/>} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />

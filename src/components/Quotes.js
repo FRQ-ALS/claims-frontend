@@ -29,12 +29,13 @@ export default function Quotes() {
   let navigate = useNavigate();
   
 
-
   const [quotes, setQuoteData] = useState([])
   const [dateString, setDate] = useState('')
   const [paymentType, setPaymentType] = useState('')
   const [submitOpen, setSubmitOpen] = useState(false)
   const [quoteID, setQuoteID] = useState('')
+
+  var jwt = localStorage.getItem('jwt')
 
 
   const handleMonthly = (event, quoteID) => {
@@ -56,15 +57,18 @@ export default function Quotes() {
 
     var quoteResponse = {quoteID, userID, paymentType}
 
-    fetch('/quotes/quoteResponse',  {
+    fetch('api/v1/quotes/quoteResponse',  {
         credentials: 'include',
         method: 'POST',
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+        "Authorization":"Bearer "+jwt+""},
         body: JSON.stringify(quoteResponse)
       }).then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson.message)
       })
+
+      navigate("/dashboard")
 
   }
 
@@ -78,10 +82,11 @@ export default function Quotes() {
     
     var userID = localStorage.getItem('userID')
 
-        fetch('quotes/getQuotes/'+userID,  {
+        fetch('api/v1/quotes/getQuotes/'+userID,  {
             credentials: 'include',
             method: 'GET',
-            headers: {"Content-Type": "application/json"
+            headers: {"Content-Type": "application/json",
+            "Authorization":"Bearer "+jwt+""
         },
           }).then((response) => response.json())
           .then(data => setQuoteData(data));
@@ -97,7 +102,7 @@ export default function Quotes() {
       <div className='quotes'>
       { quotes.map(quote => {
             return(
-                <Paper sx={{
+                    <Paper sx={{
                     position:'relative',
                     top:10,
                     width:355,

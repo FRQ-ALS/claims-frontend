@@ -27,6 +27,8 @@ export default function YourVehicle() {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertText, setAlertText] = useState('')
 
+  var jwt = localStorage.getItem('jwt')
+
 
   function changeButtonText(insurance) {
     if(insurance) {
@@ -55,10 +57,11 @@ export default function YourVehicle() {
 
     var postBody = {vehicleID, userID}
 
-    fetch('quotes/get',  {
+    fetch('api/v1/quotes/get',  {
       credentials: 'include',
       method: 'POST',
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json",
+      "Authorization":"Bearer "+jwt+""},
       body: JSON.stringify(postBody)
     }).then((response) => response.json())
     .then(data => setQuoteData(data))
@@ -70,10 +73,11 @@ export default function YourVehicle() {
     
     var userID = localStorage.getItem('userID')
 
-        fetch('vehicles/get/'+userID,  {
+        fetch('api/v1/vehicles/get/'+userID,  {
             credentials: 'include',
             method: 'GET',
-            headers: {"Content-Type": "application/json"
+            headers: {"Content-Type": "application/json",
+            "Authorization":"Bearer "+jwt+""
         },
           }).then((response) => response.json())
           .then(data => setCarData(data));

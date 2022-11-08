@@ -39,10 +39,14 @@ export default function YourVehicle() {
 
     var register = {userID, registrationNumber, vinNumber, mileage, estimatedValue}
 
-    fetch('vehicles/register',  {
+    var jwt = localStorage.getItem('jwt')
+
+
+    fetch('api/v1/vehicles/register',  {
       credentials: 'include',
       method: 'POST',
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json",
+      "Authorization":"Bearer "+jwt+""},
       body: JSON.stringify(register)
     }).then((response) => response.json())
     .then((responseJson) => {

@@ -26,14 +26,19 @@ export default function Insurance() {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertText, setAlertText] = useState('')
 
+  var jwt = localStorage.getItem('jwt')
+
   React.useEffect (() => {
     
     var userID = localStorage.getItem('userID')
+    
+    
 
-        fetch('insurance/getInsurance/'+userID,  {
+        fetch('api/v1/insurance/getInsurance/'+userID,  {
             credentials: 'include',
             method: 'GET',
-            headers: {"Content-Type": "application/json"
+            headers: {"Content-Type": "application/json",
+            "Authorization":"Bearer "+jwt+""
         },
           }).then((response) => response.json())
           .then(data => setInsurances(data));
@@ -46,10 +51,12 @@ export default function Insurance() {
 
         var body = {userID, insuranceID, vehicleID}
 
-        fetch('/insurance/makeclaim/',  {
+
+        fetch('api/v1/insurance/makeclaim/',  {
             credentials: 'include',
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json",
+          "Authorization":"Bearer "+jwt+""},
             body: JSON.stringify(body)
           }).then((response) => response.json())
           .then((responseJson) => {

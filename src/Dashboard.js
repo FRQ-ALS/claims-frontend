@@ -61,10 +61,13 @@ const handleSubmit = (e) => {
   e.preventDefault();
   var submit = {vin, insuranceNo};
 
+  var jwt = localStorage.getItem('jwt')
+
   fetch('/claims/make',  {
     credentials: 'include',
     method: 'POST',
-    headers: {"Content-Type": "application/json"},
+    headers: {"Content-Type": "application/json",
+    "Authorization":"Bearer "+jwt+""},
     body: JSON.stringify(submit)
   }).then((response) => response.json())
     .then((responseJson) => {

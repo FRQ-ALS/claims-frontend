@@ -56,7 +56,7 @@ const handleSubmit = (e) => {
   setOpen(false)
   const login = {email, password};
 
-  fetch('/account/login',  {
+  fetch('api/v1/account/authenticate',  {
     credentials: 'include',
     method: 'POST',
     headers: {"Content-Type": "application/json"},
@@ -78,7 +78,11 @@ const handleSubmit = (e) => {
     }
 
     console.log(responseJson.jwt)
-    
+
+    localStorage.setItem("jwt", responseJson.jwt)
+
+    sessionStorage.setItem("loggedIn", true)
+  
     
   })
 };

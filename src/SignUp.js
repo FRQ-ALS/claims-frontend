@@ -38,6 +38,9 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [retype, setRetype] = useState('');
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [age, setAge] = useState('')
   const [alertSeverity, setSeverity] = useState('')
 
 
@@ -53,6 +56,18 @@ export default function SignUp() {
     setRetype(e.target.value)
   }
 
+  const handleFirstName = (e )=> {
+    setFirstName(e.target.value)
+  }
+
+  const handleLastName = (e) => {
+    setLastName(e.target.value)
+  }
+
+  const handleAge = (e) => {
+    setAge(e.target.value)
+  }
+
 
   function checkPasword(pass1, pass2) {
     if(pass1 != pass2){
@@ -61,6 +76,7 @@ export default function SignUp() {
         setText("Your passwords do not match")
         return false;
     }
+    
 
     if(pass1.length < 8) {
         setSeverity("error")
@@ -79,9 +95,9 @@ export default function SignUp() {
     event.preventDefault();
 
     if(checkPasword(password, retype)) {
-        var signup = {email, password}
+        var signup = {email, password, firstName, lastName, age}
   
-        fetch('account/register',  {
+        fetch('api/v1/account/register',  {
           credentials: 'include',
           method: 'POST',
           headers: {"Content-Type": "application/json"},
@@ -163,6 +179,46 @@ export default function SignUp() {
                   onChange={handleRetype}
                 />
               </Grid>
+
+              <Grid item xs ={4}>
+              <TextField
+                  required ={true}
+                  fullWidth
+                  name="firstName"
+                  label="Forename"
+                  type="firstName"
+                  id="firstName"
+                  autoComplete="firstName"
+                  onChange={handleFirstName}
+                />
+              </Grid>
+
+              <Grid item xs ={4}>
+              <TextField
+                  required ={true}
+                  fullWidth
+                  name="lastName"
+                  label="Surname"
+                  type="lastName"
+                  id="lastName"
+                  autoComplete="lastName"
+                  onChange={handleLastName}
+                />
+              </Grid>
+
+              <Grid item xs ={4}>
+              <TextField
+                  required ={true}
+                  fullWidth
+                  name="age"
+                  label="Your age"
+                  type="age"
+                  id="age"
+                  autoComplete="age"
+                  onChange={handleAge}
+                />
+              </Grid>
+
               <Grid item xs ={12}>
                 <Collapse in={open}>
               <Alert severity={alertSeverity}>
@@ -170,14 +226,8 @@ export default function SignUp() {
               </Alert>
               </Collapse>
               </Grid>
-              <Grid item xs ={12}>
-              </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
+
+       
             </Grid>
             <Button
               type="submit"
