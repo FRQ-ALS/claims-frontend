@@ -49,8 +49,13 @@ const Appbar = () => {
       navigate("/")
     }
 
-    if(item=="Dashboard")
+    if(item=="Dashboard") {
     navigate("/dashboard")
+    }
+
+    if(item=="Profile") {
+      navigate("/profile")
+    }
 
     }
 

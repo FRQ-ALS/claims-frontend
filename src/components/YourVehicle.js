@@ -26,6 +26,8 @@ export default function YourVehicle() {
   const [quoteData, setQuoteData] = useState([])
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertText, setAlertText] = useState('')
+  const [quoteAlertText, setQuoteAlertText] = useState('')
+  const [quoteAlertOpen, setQuoteAlertOpen] = useState(false)
 
   var jwt = localStorage.getItem('jwt')
 
@@ -66,6 +68,22 @@ export default function YourVehicle() {
     }).then((response) => response.json())
     .then(data => setQuoteData(data))
     console.log(quoteData)
+
+    setQuoteAlertOpen(true)
+    setQuoteAlertText("Fetching quotes...") 
+    
+    setTimeout(()=> {
+      setAlertOpen(false)
+      refreshPage()
+
+    }, 3000)
+
+
+
+  }
+
+  function refreshPage(){
+    window.location.reload(false)
   }
 
 
@@ -90,12 +108,7 @@ export default function YourVehicle() {
     <React.Fragment>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Collapse in={alertOpen}>
-                                <Alert severity="success">
-                                    <strong>{alertText}</strong>
-                                </Alert>
-
-                            </Collapse>
+            
 
       <Paper sx={{
         position:'relative',
@@ -155,7 +168,30 @@ export default function YourVehicle() {
 
         </Box>
       </Paper>
-      
+
+   
+
+            <Collapse in={quoteAlertOpen}>
+                  <Alert sx={{
+                    position:'inherit',
+                    marginTop:4,
+                    borderRadius:3
+                             }}  
+                    severity="info">
+                        <strong>{quoteAlertText}</strong>
+                   </Alert>
+
+             </Collapse>
+             <Collapse in={alertOpen}>
+                  <Alert sx={{
+                    position:'inherit',
+                    marginTop:4,
+                    borderRadius:3
+                  }} severity="success">
+                        <strong>{alertText}</strong>
+                    </Alert>
+
+             </Collapse>
     </ThemeProvider>
     </React.Fragment>
   );

@@ -10,6 +10,7 @@ import Appbar from './Appbar';
 import ApiTest from './ApiTest';
 import CarRegistry from './components/CarRegistry';
 import { red } from '@mui/material/colors';
+import Profile from './components/Profile';
 
 
 import {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/Apitest" element={<ApiTest />} />
             <Route path="/registercar" element={<CarRegistry />} />
 

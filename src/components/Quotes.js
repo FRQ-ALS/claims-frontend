@@ -68,8 +68,13 @@ export default function Quotes() {
         console.log(responseJson.message)
       })
 
-      navigate("/dashboard")
+      refreshPage()
+      
 
+  }
+
+  function refreshPage(){
+    window.location.reload(false)
   }
 
   const handleSubmitClose = (e) => {
@@ -186,8 +191,8 @@ export default function Quotes() {
         <Dialog open={submitOpen} onClose={handleSubmitClose}>
                     <DialogTitle>Are you sure you want to pay {paymentType}?</DialogTitle>
                         <DialogActions>
-                        <Button variant='contained' onClick={handleSubmitClose}>Cancel</Button>
-                        <Button variant='contained'onClick={handleSubmit}>Submit</Button>
+                        <Button variant='contained' onClick={handleSubmitClose}>GO BACK</Button>
+                        <Button variant='contained'onClick={handleSubmit}>IM SURE</Button>
                         </DialogActions>
                   </Dialog>
     </ThemeProvider>
