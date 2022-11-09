@@ -32,6 +32,9 @@ export default function SignIn() {
   const [open, setOpen] = useState(false);
   const [errorText, setText] = useState('')
 
+  const [loginAlertOpen, setLoginAlertOpen] = useState(false)
+  const [loginALertText, setLoginAlertText] = useState('')
+  const [alertType, setAlertType] = useState('')
   function handleError(status) {
     setOpen(status)
   }
@@ -64,23 +67,36 @@ const handleSubmit = (e) => {
   }).then((response) => response.json())
   .then((responseJson) => {
     if(responseJson.userID== undefined) {
+      setAlertType("error")
       setOpen(true)
       setText("Incorrect email or password, try again")
       return
     }
     localStorage.setItem('userID', responseJson.userID)
     if(responseJson.carRegistered==true) {
-      navigate("/dashboard")
+      setAlertType("success")
+      setOpen(true)
+      setText("Logging you in...")
+
+      setTimeout(()=>{
+        navigate("/dashboard")
+      },2000)
+      
     }
 
     if(responseJson.carRegistered==false) {
-      navigate("/registerCar")
+      setAlertType("success")
+      setOpen(true)
+      setText("Logging you in...")
+
+      setTimeout(()=>{
+        navigate("/registerCar")
+      },2000)
+      
     }
 
     console.log(responseJson.jwt)
-
     localStorage.setItem("jwt", responseJson.jwt)
-
     sessionStorage.setItem("loggedIn", true)
   
     
@@ -130,7 +146,7 @@ const handleSubmit = (e) => {
             />
             <Grid item xs ={12}>
                 <Collapse in={open}>
-              <Alert severity="error">
+              <Alert sx={{textAlign:'center'}} severity={alertType}>
                  <strong>{errorText}</strong>
               </Alert>
               </Collapse>

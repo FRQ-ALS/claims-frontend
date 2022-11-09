@@ -157,7 +157,7 @@ const Appbar = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Button onClick={event=> handleMenuSelection(event, setting)} textAlign="center">{setting}</Button>
+                    <Button sx={{fontWeight:'bold'}} onClick={event=> handleMenuSelection(event, setting)} textAlign="center">{setting}</Button>
                   </MenuItem>
                 ))}
               </Menu>

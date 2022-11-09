@@ -238,7 +238,7 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Grid container justifyContent="center">
-              <Grid item onClick={() => navigate("/")}>
+              <Grid item onClick={() => navigate("/login")}>
                 <Link href="#" variant="body2">
                   Already have an account? Sign in
                 </Link>
